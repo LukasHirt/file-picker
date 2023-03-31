@@ -1,0 +1,16 @@
+{
+  "extends": "@ownclouders/tsconfig",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "allowJs": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "outDir": "./dist",
+    "module": "ESNext"
+  },
+  "vueCompilerOptions": {
+    "extensions": [".vue"],
+    "target": 2
+  }
+}
