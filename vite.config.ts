@@ -7,7 +7,16 @@ import basicSsl from '@vitejs/plugin-basic-ssl'
 export default defineConfig({
   plugins: [basicSsl(), vue()],
   resolve: {
-    alias: { '@': path.resolve(__dirname, './src') }
+    alias: [
+      {
+        find: '@',
+        replacement: path.resolve(__dirname, './src')
+      },
+      {
+        find: 'stream',
+        replacement: `stream-browserify`
+      }
+    ]
   },
   preview: {
     https: true,
@@ -18,11 +27,23 @@ export default defineConfig({
     cssCodeSplit: true,
     lib: {
       entry: path.resolve(__dirname, './src/main.ts'),
-      name: 'file-picker',
+      name: 'OCFilePicker',
       fileName: 'file-picker',
-      formats: ['es', 'umd']
+      formats: ['es', 'umd', 'iife']
     },
-    emptyOutDir: true
+    emptyOutDir: true,
+    minify: false,
+    rollupOptions: {
+      external: ['vue'],
+      output: {
+        globals: {
+          vue: 'Vue'
+        }
+      }
+    },
+    commonjsOptions: {
+      ignoreTryCatch: (id) => id !== 'stream'
+    }
   },
   define: {
     'process.env.NODE_ENV': `"${process.env.NODE_ENV}"`
